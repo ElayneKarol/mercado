@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quitanda D. Josefa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --laranja:#ff7a00;
+      --amarelo-pastel:#fff3b0;
+      --verde-claro:#80ed99;
+      --verde-escuro:#007f5f;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --bg:#fffdf6;
+      font-family:'Poppins', sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:#111}
+    header{background:var(--card);border-bottom:2px solid var(--verde-claro);padding:16px 24px;display:flex;gap:16px;align-items:center;position:sticky;top:0;z-index:40}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--verde-escuro);font-size:20px;cursor:pointer}
+    .logo img{width:48px;height:auto;border-radius:6px}
+    .search{flex:1;display:flex;gap:8px}
+    .search input{flex:1;padding:10px 12px;border:1px solid #dbe7e2;border-radius:8px;font-size:15px}
+    .cart button{background:var(--verde-escuro);color:#fff;padding:10px 12px;border-radius:8px;border:0;font-weight:600;cursor:pointer}
+
+    .categories-top{background:var(--amarelo-pastel);padding:10px 0;}
+    .categories-list{display:flex;justify-content:center;gap:20px;list-style:none;margin:0;padding:0}
+    .categories-list li{font-weight:600;color:var(--verde-escuro);cursor:pointer;padding:8px 16px;border-radius:20px;transition:all .2s ease-in-out;}
+    .categories-list li:hover{background:rgba(0,0,0,0.05)}
+
+    .container{max-width:1200px;margin:22px auto;padding:0 18px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+    .card{background:var(--card);border-radius:14px;padding:12px;box-shadow:0 6px 16px rgba(20,20,30,0.05);display:flex;flex-direction:column;transition:transform .2s}
+    .card:hover{transform:translateY(-4px)}
+    .card img{width:100%;height:170px;object-fit:cover;border-radius:10px}
+    .card .title{font-weight:600;margin:8px 0 4px 0;color:var(--verde-escuro)}
+    .card .meta{color:var(--muted);font-size:13px;margin-bottom:8px}
+    .price-row{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .price{font-weight:700;color:var(--laranja)}
+    .add{background:var(--verde-claro);color:#000;border:0;padding:8px 10px;border-radius:8px;cursor:pointer;font-weight:600}
+    .add:hover{background:var(--amarelo-pastel)}
+
+    .pagination{display:flex;gap:8px;align-items:center;margin-top:18px;justify-content:center}
+    .page-btn{padding:8px 12px;border-radius:8px;border:1px solid #e3eef0;background:#fff;cursor:pointer}
+
+    .drawer{position:fixed;right:18px;top:82px;width:360px;max-width:92vw;background:var(--card);border-radius:12px;padding:12px;box-shadow:0 14px 40px rgba(15,15,20,0.15)}
+    .drawer h3{margin:0 0 12px 0;color:var(--verde-escuro)}
+    .cart-item{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed #eef6f3}
+    .cart-item img{width:54px;height:54px;object-fit:cover;border-radius:8px}
+    .qty{display:flex;gap:6px;align-items:center}
+    .btn-ghost{background:transparent;border:1px solid #e6eef0;padding:6px 8px;border-radius:8px;cursor:pointer}
+
+    .overview{display:none;background:var(--card);padding:20px;border-radius:12px;box-shadow:0 6px 16px rgba(20,20,30,0.05);margin-bottom:20px;}
+    .overview h2{color:var(--verde-escuro)}
+
+    footer{background:var(--verde-escuro);color:#fff;text-align:center;padding:20px 10px;margin-top:40px;}
+    footer a{color:var(--verde-claro);text-decoration:none;font-weight:600}
+    footer a:hover{text-decoration:underline}
+
+    @media (max-width:880px){
+      .categories-list{flex-wrap:wrap}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo" id="home-logo">
+      <img src="logo.jpg" alt="Logo Quitanda D. Josefa" />
+      <div>Quitanda D. Josefa</div>
+    </div>
+    <div class="search"><input id="search" placeholder="Buscar frutas, doces ou parceiros..." /></div>
+    <div class="cart"><button id="open-cart">Carrinho (<span id="cart-count">0</span>)</button></div>
+  </header>
+
+  <nav class="categories-top">
+    <ul class="categories-list" id="categories">
+      <li data-cat="todos">Todos</li>
+      <li data-cat="frutas">Frutas</li>
+      <li data-cat="doces">Doces</li>
+      <li data-cat="parceiros">Produtores Parceiros</li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <div class="overview" id="overview">
+      <h2>Visão Geral da Quitanda D. Josefa</h2>
+      <p>Bem-vindo à nossa quitanda online! Aqui você encontra frutas frescas, doces caseiros e produtos dos nossos parceiros locais. Nosso compromisso é oferecer qualidade, sabor e apoiar os produtores da nossa comunidade.</p>
+    </div>
+
+    <div class="topbar">
+      <div id="results">Mostrando <span id="count">0</span> produtos</div>
+      <div>
+        <label>Ordenar: 
+          <select id="sort">
+            <option value="relevancia">Relevância</option>
+            <option value="preco-asc">Preço ↑</option>
+            <option value="preco-desc">Preço ↓</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="products" id="products"></div>
+    <div class="pagination" id="pagination"></div>
+  </main>
+
+  <div id="cart-drawer" class="drawer" style="display:none">
+    <h3>Seu Carrinho</h3>
+    <div id="cart-list"></div>
+    <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
+      <strong>Total: R$ <span id="cart-total">0.00</span></strong>
+      <button class="add" id="checkout">Finalizar</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>🍊 Quitanda D. Josefa — Rua das Palmeiras, 45 — Mossoró/RN</p>
+    <p>📞 (84) 99999-9999 | 💬 <a href="#">@quitandadjosefa</a></p>
+    <p>&copy; 2025 Quitanda D. Josefa — Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    const sample = [
+      {id:1,name:'Banana Nanica',cat:'frutas',price:3.20,img:'banana.jpg',desc:'Bananas maduras e doces',offer:false},
+      {id:2,name:'Manga Rosa',cat:'frutas',price:5.00,img:'manga.webp',desc:'Mangas frescas e suculentas',offer:true},
+      {id:3,name:'Doces de Frutas',cat:'doces',price:6.50,img:'doce.webp',desc:'Camadas de bolo e creme artesanal',offer:false},
+      {id:4,name:'Uva Verde',cat:'frutas',price:6.50,img:'uva.jpeg',desc:'Uvas verdes e crocantes',offer:false},
+      {id:5,name:'Maçã Fuji',cat:'frutas',price:6.50,img:'maca.jpg',desc:'Maçãs Fuji crocantes e doces',offer:false},
+      {id:6,name:'Doce de Banana',cat:'doces',price:6.50,img:'docebanana.jpg',desc:'Camadas de bolo e creme artesanal',offer:false},
+      {id:7,name:'Fazenda Boa Esperança',cat:'parceiros',price:0,img:'fazenda.jpg',desc:'Produtor de frutas orgânicas locais',offer:false}
+    ];
+
+    let products = [...sample];
+    const perPage = 6;
+    let state = {page:1,cat:'todos',q:'',sort:'relevancia'};
+
+    const cart = JSON.parse(localStorage.getItem('merce_cart')||'{}');
+
+    function saveCart(){localStorage.setItem('merce_cart',JSON.stringify(cart));renderCart();}
+
+    function renderProducts(){
+      document.getElementById('overview').style.display = 'none';
+      const container=document.getElementById('products');container.innerHTML='';
+      let list=products.filter(p=>state.cat==='todos'||p.cat===state.cat).filter(p=>p.name.toLowerCase().includes(state.q.toLowerCase()));
+      if(state.sort==='preco-asc') list.sort((a,b)=>a.price-b.price);
+      if(state.sort==='preco-desc') list.sort((a,b)=>b.price-a.price);
+      const total=list.length;document.getElementById('count').textContent=total;
+      const start=(state.page-1)*perPage;const pageItems=list.slice(start,start+perPage);
+      pageItems.forEach(p=>{
+        const card=document.createElement('div');card.className='card';
+        const priceHTML = p.price > 0 ? `<div class="price">R$ ${p.price.toFixed(2)}</div>` : `<div class="price">Parceiro</div>`;
+        const btnHTML = p.price > 0 ? `<button class="add" data-id="${p.id}">Adicionar</button>` : '';
+        card.innerHTML=`<img src="${p.img}" alt="${p.name}" /><div class="title">${p.name}</div><div class="meta">${p.desc}</div><div class="price-row">${priceHTML}${btnHTML}</div>`;
+        container.appendChild(card);
+      });
+      renderPagination(total);
+      document.querySelectorAll('.add').forEach(btn=>btn.addEventListener('click',e=>addToCart(Number(e.currentTarget.dataset.id))));
+    }
+
+    function renderPagination(total){
+      const pages=Math.max(1,Math.ceil(total/perPage));
+      const wrap=document.getElementById('pagination');wrap.innerHTML='';
+      for(let i=1;i<=pages;i++){
+        const b=document.createElement('button');b.className='page-btn';b.textContent=i;if(i===state.page)b.style.fontWeight='700';
+        b.addEventListener('click',()=>{state.page=i;renderProducts();});wrap.appendChild(b);
+      }
+    }
+
+    function addToCart(id){
+      const p=products.find(x=>x.id===id);if(!p)return;
+      if(cart[id])cart[id].qty+=1;else cart[id]={id:p.id,name:p.name,price:p.price,img:p.img,qty:1};
+      saveCart();
+      document.getElementById('cart-count').textContent=Object.values(cart).reduce((s,i)=>s+i.qty,0);
+    }
+
+    function renderCart(){
+      document.getElementById('cart-count').textContent=Object.values(cart).reduce((s,i)=>s+i.qty,0);
+      const list=document.getElementById('cart-list');list.innerHTML='';
+      let total=0;
+      Object.values(cart).forEach(item=>{
+        total+=item.price*item.qty;
+        const row=document.createElement('div');row.className='cart-item';
+        row.innerHTML=`<img src="${item.img}" /><div style="flex:1"><div style="font-weight:600">${item.name}</div><div>R$ ${item.price.toFixed(2)}</div></div><div class="qty"><button class="btn-ghost" data-dec="${item.id}">-</button><div>${item.qty}</div><button class="btn-ghost" data-inc="${item.id}">+</button></div>`;
+        list.appendChild(row);
+      });
+      document.getElementById('cart-total').textContent=total.toFixed(2);
+      document.querySelectorAll('[data-inc]').forEach(b=>b.addEventListener('click',e=>{const id=e.currentTarget.dataset.inc;cart[id].qty+=1;saveCart();}));
+      document.querySelectorAll('[data-dec]').forEach(b=>b.addEventListener('click',e=>{const id=e.currentTarget.dataset.dec;cart[id].qty-=1;if(cart[id].qty<=0)delete cart[id];saveCart();}));
+    }
+
+    document.getElementById('search').addEventListener('input',e=>{state.q=e.target.value;state.page=1;renderProducts();});
+    document.getElementById('categories').addEventListener('click',e=>{const li=e.target.closest('li');if(!li)return;state.cat=li.dataset.cat;state.page=1;renderProducts();});
+    document.getElementById('sort').addEventListener('change',e=>{state.sort=e.target.value;renderProducts();});
+    document.getElementById('open-cart').addEventListener('click',()=>{const d=document.getElementById('cart-drawer');d.style.display=d.style.display==='none'?'block':'none';renderCart();});
+    document.getElementById('checkout').addEventListener('click',()=>{alert('Checkout simulado. Integração futura com sistema de pagamento.');});
+    document.getElementById('home-logo').addEventListener('click',()=>{document.getElementById('overview').style.display='block';document.getElementById('products').innerHTML='';document.getElementById('pagination').innerHTML='';});
+
+    renderProducts();renderCart();
+  </script>
+</body>
+</html>
